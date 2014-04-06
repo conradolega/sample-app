@@ -23,7 +23,7 @@ describe User do
     before { @user.email = " " }
     it { should_not be_valid }
   end
-  
+
   describe "when email format is invalid" do
     it "should be invalid" do
       addresses = %w[user@foo,com user_at_foo.org example.user@foo.
@@ -44,4 +44,14 @@ describe User do
       end
     end
   end  
+
+  describe "when email address is already taken" do
+    before do
+      user_with_same_email = @user.dup
+      user_with_same_email.email = @user.email.upcase
+      user_with_same_email.save
+    end
+
+    it { should_not be_valid }
+  end
 end
